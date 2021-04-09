@@ -14,6 +14,11 @@ public class Player : MonoBehaviour
         _playerAgent = gameObject.GetComponent<NavMeshAgent>();
         _playerMovementAnim = GetComponentInChildren<Animator>();
 
+        if (_playerAgent == null)
+        {
+            Debug.LogError("NavMeshAgent is Null");
+        }
+
         if (_playerMovementAnim == null)
         {
             Debug.LogError("Player Animator is Null");
@@ -35,7 +40,6 @@ public class Player : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            //While player is moving - walk = true
             if (Physics.Raycast(ray, out hit))
             {
                 _playerAgent.SetDestination(hit.point);
@@ -50,7 +54,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // walk = false
             _walking = false;
         }
 
