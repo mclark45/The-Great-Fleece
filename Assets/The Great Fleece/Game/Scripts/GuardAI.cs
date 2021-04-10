@@ -11,20 +11,38 @@ public class GuardAI : MonoBehaviour
     [SerializeField]
     private int _currentTarget;
     private bool _reverse = false;
+    private int _startPosition;
+    private int _endPosition;
+    private int _guardTwoEndPosition;
+    private Animator _enemyAnim;
+    private bool _walking = false;
+
 
     void Start()
     {
+        _walking = false;
+        _startPosition = Random.Range(10, 15);
+        _endPosition = Random.Range(8, 12);
+        _guardTwoEndPosition = Random.Range(10, 15);
+
         _enemyAgent = gameObject.GetComponent<NavMeshAgent>();
+        _enemyAnim = gameObject.GetComponent<Animator>();
 
         if (_enemyAgent == null)
         {
             Debug.LogError("Enemy NavMeshAgent is Null");
+        }
+
+        if (_enemyAnim == null)
+        {
+            Debug.LogError("Enemy animator is null");
         }
     }
 
     void Update()
     {
         EnemyAI();
+        AnimationControl();
     }
 
     private void EnemyAI()
@@ -37,21 +55,56 @@ public class GuardAI : MonoBehaviour
 
             if (distance < 1.0f)
             {
-                if (_reverse == false && _currentTarget != (_wayPoints.Count -1))
+                if (_reverse == false && _currentTarget != (_wayPoints.Count - 1))
                 {
                     _currentTarget++;
                 }
-                else if (_currentTarget == (_wayPoints.Count - 1) || _reverse == true)
+                else if (_reverse == true && _currentTarget != 0)
                 {
                     _currentTarget--;
-                    _reverse = true;
                 }
 
                 if (_currentTarget == 0)
                 {
-                    _reverse = false;
+                    StartCoroutine(PauseMovement(_startPosition));
+                }
+                else if (_currentTarget == (_wayPoints.Count - 1))
+                {
+                    StartCoroutine(PauseMovement(_endPosition));
+                }
+                else if (_wayPoints.Count > 3)
+                {
+                    StartCoroutine(PauseMovement(_guardTwoEndPosition));
                 }
             }
+        }
+    }
+
+    private void AnimationControl()
+    {
+        if (_enemyAgent.remainingDistance > _enemyAgent.stoppingDistance)
+        {
+            _walking = true;
+        }
+        else
+        {
+            _walking = false;
+        }
+
+        _enemyAnim.SetBool("Walk", _walking);
+    }
+
+    IEnumerator PauseMovement(int random)
+    {
+        if (_currentTarget == 0)
+        {
+            yield return new WaitForSeconds(random);
+            _reverse = false;
+        }
+        else if (_currentTarget == (_wayPoints.Count - 1))
+        {
+            yield return new WaitForSeconds(random);
+            _reverse = true;
         }
     }
 }

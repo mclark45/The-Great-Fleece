@@ -6,6 +6,12 @@ public class LookAtPlayer : MonoBehaviour
 {
     [SerializeField]
     private Transform _player;
+    public Transform startCamera;
+    private void Start()
+    {
+        transform.position = startCamera.position;
+        transform.rotation = startCamera.rotation;
+    }
 
 
     void Update()
