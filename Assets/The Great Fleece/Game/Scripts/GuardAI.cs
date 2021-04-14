@@ -16,6 +16,8 @@ public class GuardAI : MonoBehaviour
     private int _guardTwoEndPosition;
     private Animator _enemyAnim;
     private bool _walking = false;
+    public bool coinTossed = false;
+    public Vector3 coinPos;
 
 
     void Start()
@@ -42,12 +44,15 @@ public class GuardAI : MonoBehaviour
     void Update()
     {
         EnemyAI();
-        AnimationControl();
+        if (coinTossed == false)
+        {
+            AnimationControl();
+        }
     }
 
     private void EnemyAI()
     {
-        if (_wayPoints.Count > 0 && _wayPoints[_currentTarget] != null)
+        if (_wayPoints.Count > 0 && _wayPoints[_currentTarget] != null && coinTossed == false)
         {
             _enemyAgent.SetDestination(_wayPoints[_currentTarget].position);
 
@@ -76,6 +81,15 @@ public class GuardAI : MonoBehaviour
                 {
                     StartCoroutine(PauseMovement(_guardTwoEndPosition));
                 }
+            }
+        }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, coinPos);
+
+            if (_enemyAgent.remainingDistance < _enemyAgent.stoppingDistance)
+            {
+                _enemyAnim.SetBool("Walk", false);
             }
         }
     }
