@@ -85,8 +85,6 @@ public class GuardAI : MonoBehaviour
         }
         else
         {
-            float distance = Vector3.Distance(transform.position, coinPos);
-
             if (_enemyAgent.remainingDistance < _enemyAgent.stoppingDistance)
             {
                 _enemyAnim.SetBool("Walk", false);
