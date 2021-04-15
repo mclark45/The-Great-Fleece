@@ -62,42 +62,11 @@ public class Player : MonoBehaviour
                 if (coins < 1)
                 {
                     StartCoroutine(CanWalk(hit.point));
-                    //Instantiate(_coin, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity);
-                    //AudioSource.PlayClipAtPoint(_coinDrop, hit.point);
                     coins++;
-                    //AItoCoin(hit.point);
                 }
             }
         }
     }
-
-  /*  void AItoCoin(Vector3 coinpos)
-    {
-        GameObject[] guards = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach (var guard in guards)
-        {
-            NavMeshAgent currentAgent = guard.GetComponent<NavMeshAgent>();
-            GuardAI currentGuard = guard.GetComponent<GuardAI>();
-            Animator currentAnim = guard.GetComponent<Animator>();
-
-            if (currentAgent != null)
-            {
-                currentAgent.SetDestination(coinpos);
-            }
-
-            if (currentGuard != null)
-            {
-                currentGuard.coinTossed = true;
-                currentGuard.coinPos = coinpos;
-            }
-
-            if (currentAnim != null)
-            {
-                currentAnim.SetBool("Walk", true);
-            }
-        }
-    }*/
 
     private void AnimationControl()
     {
@@ -119,7 +88,7 @@ public class Player : MonoBehaviour
         _playerMovementAnim.SetTrigger("Toss");
         yield return new WaitForSeconds(1.5f);
         Instantiate(_coin, new Vector3(hit.x, hit.y, hit.z), Quaternion.identity);
-        AudioSource.PlayClipAtPoint(_coinDrop, hit);
+        AudioManager.Instance.CoinSound(_coinDrop);
         GameObject[] guards = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (var guard in guards)

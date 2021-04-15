@@ -52,42 +52,45 @@ public class GuardAI : MonoBehaviour
 
     private void EnemyAI()
     {
-        if (_wayPoints.Count > 0 && _wayPoints[_currentTarget] != null && coinTossed == false)
+        if (_wayPoints.Count > 0 && _wayPoints[_currentTarget] != null)
         {
-            _enemyAgent.SetDestination(_wayPoints[_currentTarget].position);
-
-            float distance = Vector3.Distance(transform.position, _wayPoints[_currentTarget].position);
-
-            if (distance < 1.0f)
+            if (coinTossed == false)
             {
-                if (_reverse == false && _currentTarget != (_wayPoints.Count - 1))
-                {
-                    _currentTarget++;
-                }
-                else if (_reverse == true && _currentTarget != 0)
-                {
-                    _currentTarget--;
-                }
+                _enemyAgent.SetDestination(_wayPoints[_currentTarget].position);
 
-                if (_currentTarget == 0)
+                float distance = Vector3.Distance(transform.position, _wayPoints[_currentTarget].position);
+
+                if (distance < 1.0f)
                 {
-                    StartCoroutine(PauseMovement(_startPosition));
-                }
-                else if (_currentTarget == (_wayPoints.Count - 1))
-                {
-                    StartCoroutine(PauseMovement(_endPosition));
-                }
-                else if (_wayPoints.Count > 3)
-                {
-                    StartCoroutine(PauseMovement(_guardTwoEndPosition));
+                    if (_reverse == false && _currentTarget != (_wayPoints.Count - 1))
+                    {
+                        _currentTarget++;
+                    }
+                    else if (_reverse == true && _currentTarget != 0)
+                    {
+                        _currentTarget--;
+                    }
+
+                    if (_currentTarget == 0)
+                    {
+                        StartCoroutine(PauseMovement(_startPosition));
+                    }
+                    else if (_currentTarget == (_wayPoints.Count - 1))
+                    {
+                        StartCoroutine(PauseMovement(_endPosition));
+                    }
+                    else if (_wayPoints.Count > 3)
+                    {
+                        StartCoroutine(PauseMovement(_guardTwoEndPosition));
+                    }
                 }
             }
-        }
-        else
-        {
-            if (_enemyAgent.remainingDistance < _enemyAgent.stoppingDistance)
+            else
             {
-                _enemyAnim.SetBool("Walk", false);
+                if (_enemyAgent.remainingDistance < _enemyAgent.stoppingDistance)
+                {
+                    _enemyAnim.SetBool("Walk", false);
+                }
             }
         }
     }

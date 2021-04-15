@@ -13,6 +13,7 @@ public class GrabKeyCardActivation : MonoBehaviour
         {
             _scenePlayed = true;
             _grabCard.SetActive(true);
+            GameManager.Instance.HasCard = true;
         }
     }
 }

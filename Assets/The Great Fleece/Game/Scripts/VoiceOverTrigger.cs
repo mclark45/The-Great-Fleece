@@ -22,7 +22,7 @@ public class VoiceOverTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            AudioSource.PlayClipAtPoint(_audioClip, player.transform.position);
+            AudioManager.Instance.PlayVoiceOver(_audioClip);
         }
     }
 }
