@@ -20,6 +20,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        _instance = this;
+    }
     public void Restart()
     {
         SceneManager.LoadScene("Main");
