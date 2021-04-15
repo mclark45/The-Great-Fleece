@@ -60,7 +60,7 @@ public class GuardAI : MonoBehaviour
 
                 float distance = Vector3.Distance(transform.position, _wayPoints[_currentTarget].position);
 
-                if (distance < 1.0f)
+                if (_enemyAgent.remainingDistance < _enemyAgent.stoppingDistance)
                 {
                     if (_reverse == false && _currentTarget != (_wayPoints.Count - 1))
                     {
